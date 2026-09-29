@@ -33,7 +33,7 @@ Built for Arch on WSL2; everything lives in `~/.config` and `install.sh` symlink
 
 4. **Zed config** (separate public repo, [zed-config](https://github.com/jnxspwdr/zed-config)): `install.sh` already cloned it into `zed/`. Skip if you don't use Zed in WSL.
 
-5. **Shell:** `chsh -s "$(command -v zsh)"`, then open a new terminal. Install a Nerd Font (GeistMono Nerd Font) on Windows and select it in your terminal so the prompt icons render.
+5. **Shell:** `chsh -s "$(command -v zsh)"`, then open a new terminal. Install a Nerd Font (GeistMono Nerd Font Mono) on Windows and select it in your terminal so the prompt icons render.
 
 6. **GitLab** (see [GitLab](#gitlab-work-laptop)): `glab auth login`, then set your git identity:
    ```sh

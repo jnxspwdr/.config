@@ -93,7 +93,7 @@ scheme.selection_bg = '#524f67' -- Rose Pine "highlight high"
 scheme.selection_fg = '#e0def4' -- Rose Pine "text"
 config.color_schemes = { ['rose-pine-custom'] = scheme }
 config.color_scheme = 'rose-pine-custom'
-config.font = wezterm.font('GeistMono Nerd Font')
+config.font = wezterm.font('GeistMono Nerd Font Mono')
 config.font_size = 12
 
 -- key bindings
