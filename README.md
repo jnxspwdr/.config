@@ -1,30 +1,53 @@
 # .config
 
 Personal dotfiles for zsh, tmux, gh, git and Claude Code. Zed config lives in its own repo ([zed-config](https://github.com/jnxspwdr/zed-config)) and is cloned into `zed/` by the installer.
-Built for WSL2/Linux; everything lives in `~/.config` and `install.sh` symlinks it into place.
+Built for Arch on WSL2; everything lives in `~/.config` and `install.sh` symlinks it into place.
 
-## Quick start
+## Setup (Arch on WSL2)
 
-Prerequisites: `git`, `zsh`, `tmux`, `curl`. Then:
+1. **Packages**
+   ```sh
+   sudo pacman -Syu --needed git zsh tmux curl unzip base-devel bat glab github-cli
+   ```
+   Optional: `nvm` and `bun` (both are picked up by `.zshrc` if present).
 
-```sh
-git clone https://github.com/jnxspwdr/.config.git ~/.config
-~/.config/install.sh
-chsh -s "$(command -v zsh)"   # make zsh the login shell, then open a new terminal
-```
+2. **Clipboard helper** (tmux copy/paste binds call `~/.local/bin/win32yank.exe`)
+   ```sh
+   mkdir -p ~/.local/bin && cd /tmp
+   curl -fsSLO https://github.com/equalsraf/win32yank/releases/latest/download/win32yank-x64.zip
+   unzip -o win32yank-x64.zip win32yank.exe -d ~/.local/bin && chmod +x ~/.local/bin/win32yank.exe
+   ```
 
-The GitHub repos are private, so authenticate to GitHub first (`gh auth login`, an SSH key, or a PAT). GitLab (work) auth is separate; see below.
+3. **Clone and install**
+   ```sh
+   git clone https://github.com/jnxspwdr/.config.git ~/.config
+   ~/.config/install.sh
+   ```
+   If `~/.config` already exists, clone in place instead:
+   ```sh
+   cd ~/.config && git init -b main
+   git remote add origin https://github.com/jnxspwdr/.config.git
+   git fetch origin && git checkout -f main   # overwrites same-named tracked files only
+   ./install.sh
+   ```
 
-If `~/.config` already exists (usual on a fresh machine), clone in place instead:
+4. **Zed config** (separate, private repo): run `gh auth login`, then re-run `~/.config/install.sh` to clone it into `zed/`. Skip if you don't use Zed in WSL.
 
-```sh
-cd ~/.config
-git init -b main
-git remote add origin https://github.com/jnxspwdr/.config.git
-git fetch origin
-git checkout -f main   # overwrites same-named tracked files only
-~/.config/install.sh
-```
+5. **Shell:** `chsh -s "$(command -v zsh)"`, then open a new terminal. Install a Nerd Font (GeistMono Nerd Font) on Windows and select it in your terminal so the prompt icons render.
+
+6. **GitLab** (see [GitLab](#gitlab-work-laptop)): `glab auth login`, then set your git identity:
+   ```sh
+   git config --global user.name "Your Name"
+   git config --global user.email "you@example.com"
+   ```
+
+7. **WezTerm** (Windows): see [WezTerm](#wezterm-windows). Copy `wezterm/wezterm.lua` to `%USERPROFILE%\.config\wezterm\`.
+
+8. **Claude Code** (optional; check your employer's policy first): install it, then caveman (`bun i -g @caveman-ai/cli` and its setup). Without caveman, remove its hooks from `claude/settings.json` and the `claude="caveman claude"` alias in `.zshrc`. If your username isn't `jnx`, fix the `/home/jnx/...` paths in `claude/settings.json` and `claude/statusline-command.sh`.
+
+9. **Verify:** new terminal shows the prompt and starts tmux; `ls -l ~/.zshrc ~/.tmux.conf ~/.claude/settings.json` shows symlinks into `~/.config`; Ctrl+Insert / Shift+Insert copy and paste in tmux; `glab auth status` passes.
+
+Update later with `git -C ~/.config pull && ~/.config/install.sh`. To push changes back, use a GitHub token scoped to this repo only.
 
 ## What `install.sh` does
 
@@ -71,11 +94,8 @@ glab auth status
 
 `glab auth login` configures git's HTTPS credential helper for that host, so `git clone`/`push` to GitLab just work. `.zshrc` loads glab zsh completions when `glab` is installed. glab stores its token in `~/.config/glab-cli/`, which is git-ignored; never commit it.
 
-## Work-laptop notes
+## Notes
 
-- **Not on WSL?** `.tmux.conf` clipboard binds call `~/.local/bin/win32yank.exe`. On plain Linux/macOS, replace them with `xclip`/`pbcopy`, or delete those three lines.
-- **Claude Code:** `claude/settings.json` hooks call `caveman` under `~/.caveman` and `~/.bun`, and `.zshrc` aliases `claude="caveman claude"`. Install caveman first (`bun i -g @caveman-ai/cli`, then its setup), or remove those hooks and the alias. Its paths are absolute `/home/jnx/...`; if your work username differs, re-run the caveman setup or edit them.
-- **Tools `.zshrc` expects** (each is guarded, so missing ones only skip that part): `nvm`, `bun`, `bat`, `zed`, `glab`.
-- Check nothing here conflicts with employer policy (telemetry settings, shell hooks) before syncing to a managed machine.
-- Set your git identity: `git config --global user.name ...` and `user.email ...`.
+- **Not on WSL?** The `.tmux.conf` clipboard binds call `win32yank.exe`; replace them with `xclip`/`pbcopy` or delete those three lines.
+- **Optional tools** (each guarded in `.zshrc`, so missing ones only skip that part): `nvm`, `bun`, `bat`, `zed`, `glab`.
 - Machine-local Claude overrides go in `.claude/settings.local.json` (git-ignored).
