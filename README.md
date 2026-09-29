@@ -46,8 +46,19 @@ gh (`gh/`) and git (`git/ignore`) are read from `~/.config` directly, so they ne
 | `.zshrc`, `.p10k.zsh` | zsh + oh-my-zsh + powerlevel10k; aliases, PATH (nvm, bun, go) |
 | `.tmux.conf` | tmux; auto-starts from zsh (`ZSH_TMUX_AUTOSTART`) |
 | `zed/` | Separate `zed-config` repo, cloned by the installer (git-ignored here) |
+| `wezterm/` | WezTerm config (Windows side; see below). Background image not tracked |
 | `claude/` | Claude Code settings + statusline |
 | `gh/`, `git/` | gh CLI config (no tokens), global git ignore |
+
+## WezTerm (Windows)
+
+WezTerm runs on Windows and reads `%USERPROFILE%\.config\wezterm\`. From WSL, copy or link it across (replace `<you>`):
+
+```sh
+ln -s ~/.config/wezterm/wezterm.lua /mnt/c/Users/<you>/.config/wezterm/wezterm.lua  # may need Developer Mode; else cp
+```
+
+`wezterm.lua` sets `default_domain = 'WSL:archlinux'`; change it to your distro name (`wsl -l`). An optional `background.png` beside it is picked up automatically and is not tracked here.
 
 ## GitLab (work laptop)
 
