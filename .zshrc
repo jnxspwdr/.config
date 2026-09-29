@@ -120,10 +120,6 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 # bun end
 
-# go stuff
-export PATH=$PATH:/usr/local/go/bin
-# go stuff end
-
 # true color for WT/WSL2
 export COLORTERM=truecolor
 # true color for WT/WSL2 end

@@ -43,7 +43,7 @@ gh (`gh/`) and git (`git/ignore`) are read from `~/.config` directly, so they ne
 
 | Path | Purpose |
 |---|---|
-| `.zshrc`, `.p10k.zsh` | zsh + oh-my-zsh + powerlevel10k; aliases, PATH (nvm, bun, go) |
+| `.zshrc`, `.p10k.zsh` | zsh + oh-my-zsh + powerlevel10k; aliases, PATH (nvm, bun) |
 | `.tmux.conf` | tmux; auto-starts from zsh (`ZSH_TMUX_AUTOSTART`) |
 | `zed/` | Separate `zed-config` repo, cloned by the installer (git-ignored here) |
 | `wezterm/` | WezTerm config (Windows side; see below). Background image not tracked |
@@ -75,7 +75,7 @@ glab auth status
 
 - **Not on WSL?** `.tmux.conf` clipboard binds call `~/.local/bin/win32yank.exe`. On plain Linux/macOS, replace them with `xclip`/`pbcopy`, or delete those three lines.
 - **Claude Code:** `claude/settings.json` hooks call `caveman` under `~/.caveman` and `~/.bun`, and `.zshrc` aliases `claude="caveman claude"`. Install caveman first (`bun i -g @caveman-ai/cli`, then its setup), or remove those hooks and the alias. Its paths are absolute `/home/jnx/...`; if your work username differs, re-run the caveman setup or edit them.
-- **Tools `.zshrc` expects** (each is guarded, so missing ones only skip that part): `nvm`, `bun`, `go`, `bat`, `zed`, `glab`.
+- **Tools `.zshrc` expects** (each is guarded, so missing ones only skip that part): `nvm`, `bun`, `bat`, `zed`, `glab`.
 - Check nothing here conflicts with employer policy (telemetry settings, shell hooks) before syncing to a managed machine.
 - Set your git identity: `git config --global user.name ...` and `user.email ...`.
 - Machine-local Claude overrides go in `.claude/settings.local.json` (git-ignored).
