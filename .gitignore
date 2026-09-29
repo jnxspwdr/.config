@@ -1,0 +1,9 @@
+.tmux/plugins/
+gh/hosts.yml
+go/telemetry/
+# managed elsewhere / machine-local
+nvim/
+zed/
+glab-cli/
+wezterm
+nextjs-nodejs/
