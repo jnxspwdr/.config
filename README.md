@@ -1,6 +1,6 @@
 # .config
 
-Personal dotfiles for zsh, tmux, gh, git and Claude Code. Zed config lives in its own repo ([zed-config](https://github.com/jnxspwdr/zed-config)) and is cloned into `zed/` by the installer.
+Personal dotfiles for zsh, tmux, gh, git and Claude Code. Zed config lives in its own public repo ([zed-config](https://github.com/jnxspwdr/zed-config)) and is cloned into `zed/` by the installer.
 Built for Arch on WSL2; everything lives in `~/.config` and `install.sh` symlinks it into place.
 
 ## Setup (Arch on WSL2)
@@ -31,7 +31,7 @@ Built for Arch on WSL2; everything lives in `~/.config` and `install.sh` symlink
    ./install.sh
    ```
 
-4. **Zed config** (separate, private repo): run `gh auth login`, then re-run `~/.config/install.sh` to clone it into `zed/`. Skip if you don't use Zed in WSL.
+4. **Zed config** (separate public repo, [zed-config](https://github.com/jnxspwdr/zed-config)): `install.sh` already cloned it into `zed/`. Skip if you don't use Zed in WSL.
 
 5. **Shell:** `chsh -s "$(command -v zsh)"`, then open a new terminal. Install a Nerd Font (GeistMono Nerd Font) on Windows and select it in your terminal so the prompt icons render.
 

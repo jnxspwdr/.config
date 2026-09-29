@@ -68,7 +68,7 @@ if [ -d "$ZED_DIR/.git" ]; then
 elif [ -e "$ZED_DIR" ]; then
   echo "warn    $ZED_DIR exists but isn't a git checkout; move it and re-run to clone zed-config" >&2
 else
-  git clone https://github.com/jnxspwdr/zed-config "$ZED_DIR" || echo "warn    could not clone zed-config (auth?); clone it to $ZED_DIR manually" >&2
+  git clone https://github.com/jnxspwdr/zed-config "$ZED_DIR" || echo "warn    could not clone zed-config; clone it to $ZED_DIR manually" >&2
 fi
 
 # Claude Code settings + statusline live in the repo, symlinked back
