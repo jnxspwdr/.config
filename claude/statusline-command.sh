@@ -109,6 +109,15 @@ if [ -n "$BASE_DIR" ]; then
   BRANCH_DIR="$BASE_DIR"
   [ -n "$ROOT_DIR" ] && BASE_DIR="$ROOT_DIR"
 
+  # vexp badge: shown only when the project root has a real, non-empty vexp
+  # index (.vexp/index.db). A bare .vexp dir is not enough, and $HOME is never
+  # treated as an indexed project (a stray ~/.vexp must not light the badge
+  # in every non-repo shell).
+  VEXP_BADGE=""
+  if [ "$BASE_DIR" != "$HOME" ] && [ -s "$BASE_DIR/.vexp/index.db" ]; then
+    VEXP_BADGE=$(printf '\033[2;38;5;108m[vexp]\033[0m')
+  fi
+
   case "$BASE_DIR" in
     "$HOME") DISPLAY_PATH="~" ;;
     "$HOME"/*) DISPLAY_PATH="~${BASE_DIR#$HOME}" ;;
@@ -134,6 +143,7 @@ if [ -n "$BASE_DIR" ]; then
   # Visible width of the other badges: strip ANSI, count chars, +1 per
   # double-width emoji (rock, bot, lightning), +1 for each joining space.
   OTHER_W=0
+  [ -n "$VEXP_BADGE" ] && OTHER_W=$((OTHER_W + 7))   # "[vexp]" + joining space
   if [ -n "$USAGE_BADGE" ]; then
     W=$(printf '%s' "$USAGE_BADGE" | sed 's/\x1b\[[0-9;]*m//g')
     OTHER_W=$((OTHER_W + ${#W} + 1))
@@ -196,6 +206,7 @@ fi
 # --- assemble ---
 OUT=""
 [ -n "$CWD_BADGE" ] && OUT="$CWD_BADGE"
+[ -n "$VEXP_BADGE" ] && OUT="${OUT:+$OUT }$VEXP_BADGE"
 [ -n "$USAGE_BADGE" ] && OUT="${OUT:+$OUT }$USAGE_BADGE"
 [ -n "$MODEL_BADGE" ] && OUT="${OUT:+$OUT }$MODEL_BADGE"
 
