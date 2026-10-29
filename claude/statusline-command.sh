@@ -51,7 +51,7 @@ if [ -n "$USAGE_PARTS" ] && [ -n "$FIVE_HOUR_RESETS_AT" ]; then
 fi
 
 USAGE_BADGE=""
-[ -n "$USAGE_PARTS" ] && USAGE_BADGE=$(printf '\033[2;38;5;244m[%s]\033[0m' "$USAGE_PARTS")
+[ -n "$USAGE_PARTS" ] && USAGE_BADGE=$(printf '\033[38;2;144;140;170m[%s]\033[0m' "$USAGE_PARTS")
 
 # --- model / effort badge, dimmed, trimmed ---
 # Drop the "Claude " prefix from the display name and abbreviate the effort
@@ -79,9 +79,9 @@ ROCK_PREFIX=""
 MODEL_BADGE=""
 if [ -n "$MODEL_SHORT" ]; then
   if [ -n "$EFFORT_SHORT" ]; then
-    MODEL_BADGE=$(printf "\033[2;38;5;110m[${ROCK_PREFIX}%s:%s]\033[0m" "$MODEL_SHORT" "$EFFORT_SHORT")
+    MODEL_BADGE=$(printf "\033[38;2;156;207;216m[${ROCK_PREFIX}%s:%s]\033[0m" "$MODEL_SHORT" "$EFFORT_SHORT")
   else
-    MODEL_BADGE=$(printf "\033[2;38;5;110m[${ROCK_PREFIX}%s]\033[0m" "$MODEL_SHORT")
+    MODEL_BADGE=$(printf "\033[38;2;156;207;216m[${ROCK_PREFIX}%s]\033[0m" "$MODEL_SHORT")
   fi
 fi
 
@@ -115,7 +115,7 @@ if [ -n "$BASE_DIR" ]; then
   # in every non-repo shell).
   VEXP_BADGE=""
   if [ "$BASE_DIR" != "$HOME" ] && [ -s "$BASE_DIR/.vexp/index.db" ]; then
-    VEXP_BADGE=$(printf '\033[2;38;5;108m[vexp]\033[0m')
+    VEXP_BADGE=$(printf '\033[38;2;196;167;231m[vexp]\033[0m')
   fi
 
   case "$BASE_DIR" in
@@ -195,11 +195,11 @@ if [ -n "$BASE_DIR" ]; then
   DISPLAY_PATH=$(trunc_head "$DISPLAY_PATH" "$AVAIL")
 
   if [ -n "$BRANCH" ]; then
-    # Path in khaki, branch in a different hue (pink) with a branch glyph and
+    # Path in gold, branch in a different hue (rose) with a branch glyph and
     # a space separator instead of ":" so the two read as separate things.
-    CWD_BADGE=$(printf '\033[2;38;5;144m%s\033[0m \033[2;38;5;175m\xe2\x8e\x87 %s\033[0m' "$DISPLAY_PATH" "$BRANCH")
+    CWD_BADGE=$(printf '\033[38;2;246;193;119m%s\033[0m \033[38;2;235;188;186m\xe2\x8e\x87 %s\033[0m' "$DISPLAY_PATH" "$BRANCH")
   else
-    CWD_BADGE=$(printf '\033[2;38;5;144m%s\033[0m' "$DISPLAY_PATH")
+    CWD_BADGE=$(printf '\033[38;2;246;193;119m%s\033[0m' "$DISPLAY_PATH")
   fi
 fi
 
