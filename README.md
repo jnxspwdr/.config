@@ -43,9 +43,9 @@ Built for Arch on WSL2; everything lives in `~/.config` and `install.sh` symlink
 
 7. **WezTerm** (Windows): see [WezTerm](#wezterm-windows). Copy `wezterm/wezterm.lua` to `%USERPROFILE%\.config\wezterm\`.
 
-8. **Claude Code** (optional; check your employer's policy first): install it, then caveman (`bun i -g @caveman-ai/cli` and its setup). Without caveman, remove its hooks from `claude/settings.json` and the `claude="caveman claude"` alias in `.zshrc`. If your username isn't `jnx`, fix the `/home/jnx/...` paths in `claude/settings.json` and `claude/statusline-command.sh`.
+8. **Claude Code** (optional; check your employer's policy first): install it, then caveman (`bun i -g @caveman-ai/cli` and its setup). `~/.claude/settings.json` is machine-local and not tracked here (it holds hooks and env that run commands), so Claude Code creates it per machine. Without caveman, remove the `claude="caveman claude"` alias in `.zshrc`. If your username isn't `jnx`, fix the `/home/jnx/...` paths in `claude/statusline-command.sh`.
 
-9. **Verify:** new terminal shows the prompt and starts tmux; `ls -l ~/.zshrc ~/.tmux.conf ~/.claude/settings.json` shows symlinks into `~/.config`; Ctrl+Insert / Shift+Insert copy and paste in tmux; `glab auth status` passes.
+9. **Verify:** new terminal shows the prompt and starts tmux; `ls -l ~/.zshrc ~/.tmux.conf ~/.claude/statusline-command.sh` shows symlinks into `~/.config`; Ctrl+Insert / Shift+Insert copy and paste in tmux; `glab auth status` passes.
 
 Update later with `git -C ~/.config pull && ~/.config/install.sh`. To push changes back, use a GitHub token scoped to this repo only.
 
@@ -54,7 +54,7 @@ Update later with `git -C ~/.config pull && ~/.config/install.sh`. To push chang
 Safe to re-run. Anything already linked is skipped; anything else at the target is moved to `<path>.bak.<timestamp>`.
 
 - Symlinks `.zshrc`, `.p10k.zsh`, `.tmux.conf`, `.tmux` into `$HOME`.
-- Symlinks `claude/settings.json` and `claude/statusline-command.sh` into `~/.claude/`.
+- Symlinks `claude/statusline-command.sh` into `~/.claude/`.
 - Clones oh-my-zsh, powerlevel10k, zsh-autosuggestions into `~/.oh-my-zsh` (the oh-my-zsh installer is not used; it would overwrite `.zshrc`).
 - Clones tmux plugin manager (tpm) into `.tmux/plugins/tpm` and installs the tmux plugins.
 - Clones [zed-config](https://github.com/jnxspwdr/zed-config) into `zed/` (skipped, with a warning, if `zed/` already exists and isn't a git checkout).
@@ -70,7 +70,7 @@ gh (`gh/`) and git (`git/ignore`) are read from `~/.config` directly, so they ne
 | `.tmux.conf` | tmux; auto-starts from zsh (`ZSH_TMUX_AUTOSTART`) |
 | `zed/` | Separate `zed-config` repo, cloned by the installer (git-ignored here) |
 | `wezterm/` | WezTerm config (Windows side; see below). Background image not tracked |
-| `claude/` | Claude Code settings + statusline |
+| `claude/` | Claude Code statusline (`settings.json` is machine-local, git-ignored) |
 | `gh/`, `git/` | gh CLI config (no tokens), global git ignore |
 
 ## WezTerm (Windows)

@@ -71,9 +71,10 @@ else
   git clone https://github.com/jnxspwdr/zed-config "$ZED_DIR" || echo "warn    could not clone zed-config; clone it to $ZED_DIR manually" >&2
 fi
 
-# Claude Code settings + statusline live in the repo, symlinked back
-# into ~/.claude so Claude Code finds them at its expected path.
-link "$REPO_DIR/claude/settings.json"         "$HOME/.claude/settings.json"
+# The Claude Code statusline lives in the repo, symlinked back into
+# ~/.claude so Claude Code finds it at its expected path. settings.json is
+# machine-local and deliberately not tracked: it holds hooks and env that
+# run commands and set the API endpoint.
 link "$REPO_DIR/claude/statusline-command.sh" "$HOME/.claude/statusline-command.sh"
 chmod +x "$HOME/.claude/statusline-command.sh"
 
