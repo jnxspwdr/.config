@@ -1,3 +1,16 @@
+# Terminal windows outside tmux get their own view instead of the oh-my-zsh
+# autostart (which attaches every window to the same session and so the same
+# current tmux window). A view is a grouped session: it shares the base
+# session's windows but keeps its own current window. destroy-unattached
+# removes the view when its terminal window closes.
+# This must stay above the p10k instant-prompt block below: instant prompt
+# redirects stdio while .zshrc runs, so `exec tmux` after it has no terminal.
+if (( $+commands[tmux] )) && [[ -z $TMUX && -z $INSIDE_EMACS && -z $EMACS && -z $VIM && -z $INTELLIJ_ENVIRONMENT_READER && -z $ZED_TERM ]]; then
+  _tmux_base=$(command tmux list-sessions -F '#{session_name}' 2>/dev/null | grep -v '^view-' | head -1)
+  [[ -n $_tmux_base ]] || { _tmux_base=main; command tmux new-session -d -s $_tmux_base }
+  exec $commands[tmux] new-session -t "=$_tmux_base" -s "view-$$" \; set-option destroy-unattached on
+fi
+
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
@@ -79,7 +92,9 @@ zstyle ':omz:update' mode auto      # update automatically without asking
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git tmux zsh-autosuggestions)
 
-ZSH_TMUX_AUTOSTART=true
+# The view-per-window setup at the top of this file replaces oh-my-zsh's tmux
+# autostart (which attaches every window to the same session).
+ZSH_TMUX_AUTOSTART=false
 
 fpath=(~/.zsh $fpath)
 
@@ -108,6 +123,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+# keep PATH free of duplicates (tmux re-copies it from each attaching terminal)
+typeset -U path
 export PATH=$HOME/.local/bin:$PATH
 PATH=~/.console-ninja/.bin:$PATH
 
