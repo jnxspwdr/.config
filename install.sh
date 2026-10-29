@@ -78,4 +78,10 @@ fi
 link "$REPO_DIR/claude/statusline-command.sh" "$HOME/.claude/statusline-command.sh"
 chmod +x "$HOME/.claude/statusline-command.sh"
 
+# Custom Claude Code themes (selected by name in the machine-local
+# settings.json). Linked per file so themes added outside the repo stay put.
+for theme in "$REPO_DIR"/claude/themes/*.json; do
+  link "$theme" "$HOME/.claude/themes/$(basename "$theme")"
+done
+
 echo "done."
