@@ -78,6 +78,34 @@ fi
 link "$REPO_DIR/claude/statusline-command.sh" "$HOME/.claude/statusline-command.sh"
 chmod +x "$HOME/.claude/statusline-command.sh"
 
+# Register the statusline in the machine-local settings.json. Adds only the
+# statusLine key, and only when absent; everything else is left untouched.
+python3 - "$HOME/.claude/settings.json" "$TS" <<'PY'
+import json, os, shutil, sys
+
+path, ts = sys.argv[1:]
+try:
+    with open(path) as f:
+        settings = json.load(f)
+except FileNotFoundError:
+    settings = {}
+except ValueError:
+    print(f"warn    {path} isn't valid JSON; add statusLine manually", file=sys.stderr)
+    sys.exit(0)
+
+if "statusLine" in settings:
+    print(f"ok      {path} (statusLine already set)")
+    sys.exit(0)
+
+if os.path.exists(path):
+    shutil.copy(path, f"{path}.bak.{ts}")
+settings["statusLine"] = {"type": "command", "command": "bash ~/.claude/statusline-command.sh"}
+with open(path, "w") as f:
+    json.dump(settings, f, indent=2, ensure_ascii=False)
+    f.write("\n")
+print(f"set     statusLine in {path}")
+PY
+
 # Custom Claude Code themes (selected by name in the machine-local
 # settings.json). Linked per file so themes added outside the repo stay put.
 for theme in "$REPO_DIR"/claude/themes/*.json; do
